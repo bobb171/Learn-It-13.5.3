@@ -4,20 +4,21 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # This is exactly what GitHub is asking for to stop the error
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
-        env:
-          # We put it directly inside the step to avoid global conflicts
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+        uses: actions/checkout@v4
 
       - name: Build with Buildozer
+        # This is the engine for your Learn It app
         uses: ArtemSBulgakov/buildozer-action@master
         with:
           buildozer_version: master
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4
         with:
           name: LearnIt-Package
           path: bin/*.apk
