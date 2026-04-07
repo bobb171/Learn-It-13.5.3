@@ -7,6 +7,9 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4.2.2
+        env:
+          # We put it directly inside the step to avoid global conflicts
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@master
