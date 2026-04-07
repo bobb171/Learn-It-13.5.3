@@ -5,9 +5,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # This is the 2026 "Master Key" to stop Node.js errors
+      # We only use the Force Node 24 command to avoid the config error
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
