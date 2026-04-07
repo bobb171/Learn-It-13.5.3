@@ -4,16 +4,23 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # This fixes the 2026 Node.js 24 requirement
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Install Buildozer Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip build-essential git python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0-gstreamer-lite-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+          pip3 install --user --upgrade buildozer cython virtualenv
+
       - name: Build with Buildozer
-        # Using the official Kivy-friendly builder to avoid the 'user' error
-        uses: akshayaurora/buildozer-action@master
-        with:
-          buildozer_version: master
-          command: buildozer android debug
+        run: |
+          # This command builds the APK for Learn It v13.5.3
+          /home/runner/.local/bin/buildozer -v android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
