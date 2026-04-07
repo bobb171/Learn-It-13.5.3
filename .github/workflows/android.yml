@@ -5,19 +5,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # This tells GitHub to stop complaining about Node 20
+      # This tells GitHub to ignore the Node 20 warning and just build
       ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4
 
       - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1.6.1
+        # We use 'master' here so GitHub can find the code easily
+        uses: ArtemSBulgakov/buildozer-action@master
         with:
           buildozer_version: master
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4
         with:
           name: LearnIt-Package
           path: bin/*.apk
