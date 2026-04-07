@@ -4,6 +4,9 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # This STOPS the "Node.js 20" warnings completely
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -21,13 +24,13 @@ jobs:
 
       - name: Build APK
         run: |
-          # Adding the local bin to PATH so GitHub can find Buildozer
           export PATH=$PATH:$HOME/.local/bin
-          # This command accepts the Android SDK licenses automatically
+          # This will try to build and show us EXACTLY where the error is
           yes | buildozer -v android debug
         continue-on-error: false
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: LearnIt-Package
